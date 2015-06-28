@@ -25,8 +25,15 @@ DEPLOYMENT_PWD="`echo 'import crypt,getpass; print crypt.crypt(getpass.getpass()
 # Create group_vars for the webservers
 mkdir -p $TMP_DIR/group_vars 2> /dev/null
 cat << EOF > $TMP_DIR/group_vars/webservers
+
+dawn_ssh_port: 22
+
 dawn_deployment_password: DEPLOYMENT_PWD
+dawn_deployment_ssh: $TMP_DIR/deployment_ssh.pub
+dawn_deployment_name: deployer
+
 dawn_root_ssh: $TMP_DIR/root_ssh.pub
+
 EOF
 
 # Create Ansible config

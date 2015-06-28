@@ -1,6 +1,12 @@
 ---
 # defaults file for dawn
 
+# Use a port number <65536 (important!) or expect a "Badly formatted port number."
+dawn_ssh_port: 22
+
 dawn_root_password: null
+dawn_root_ssh: null
 
 dawn_deployment_password: null
+dawn_deployment_ssh: null
+dawn_deployment_name: deployment

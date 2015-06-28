@@ -1,36 +1,65 @@
-Role Name
-=========
+Ansible Debian Dawn Role
+========================
 
-A brief description of the role goes here.
+Configure a new Debian server.
+
+- Add deployment user.
+- Add ssh keys.
+- Add basic (dev) tools like git, vim and fail2ban.
+- Update apt.
+- Schedule automatic security updates.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Debian 7/8
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+**SSH service port number:**
+dawn_ssh_port
+
+**Root password and ssh public key location:**
+dawn_root_password
+dawn_root_ssh
+
+**Deployment used password, ssh public key and username:**
+dawn_deployment_password
+dawn_deployment_ssh
+dawn_deployment_name
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+	---
+	- hosts: webservers
+  	  gather_facts: yes
+  	  sudo: yes
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+  	  roles:
+    	- ansible-debian-dawn
+
+  	  vars_prompt:
+
+      # Root user prompt
+   		- name: "dawn_root_password"
+      	  prompt: "Enter password for root"
+      	  private: yes
+      	  encrypt: "sha512_crypt"
+      	  confirm: yes
+      	  salt_size: 7
+      	  when: dawn_root_password == null
 
 License
 -------
 
-BSD
+MIT
 
 References
 ------------------
@@ -38,7 +67,10 @@ References
 Inspired by:
 [First Five (and a Half) Minutes on a Server with Ansible - Matthew Smith](http://lattejed.com/first-five-and-a-half-minutes-on-a-server-with-ansible)
 
-crypted passwords, generated on a Linux box using: 
+Crypted passwords, generated on a Linux box using: 
 
 	echo 'import crypt,getpass; print crypt.crypt(getpass.getpass(), "$6$usesalt")' | python -
 
+[Service Name and Transport Protocol Port Number Registry](http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xml)
+
+[Securing Debian Manual](https://www.debian.org/doc/manuals/securing-debian-howto/index.en.html)

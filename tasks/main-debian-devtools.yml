@@ -6,3 +6,5 @@
 - name: Install git
   apt: name=git state=present
 
+- name: Install nano
+  apt: name=nano state=present
