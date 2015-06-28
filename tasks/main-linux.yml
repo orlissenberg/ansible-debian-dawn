@@ -1,0 +1,47 @@
+---
+
+- name: Install ssh
+  apt: name=ssh state=present
+
+- fail: msg="Root password must be defined."
+  when: dawn_root_password is undefined 
+        or dawn_root_password|trim == ""
+        or dawn_root_password == none
+
+- fail: msg="Deployment password must be defined."
+  when: dawn_deployment_password is undefined 
+        or dawn_deployment_password|trim == ""
+        or dawn_deployment_password == none
+
+# Root user
+# {{ dawn_root_password |password_hash('sha512') }}
+- name: Change root password
+  user: name=root password={{ dawn_root_password }}
+
+- authorized_key: user=root key="{{ lookup('file', dawn_root_ssh) }}"
+
+- name: Disallow root SSH access
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin no" state=present
+  notify: restart-ssh
+
+# Sudo group & password authentication
+- name: Remove sudo group rights
+  lineinfile: dest=/etc/sudoers regexp="^%sudo" state=absent
+
+- name: Disallow password authentication
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^PasswordAuthentication" line="PasswordAuthentication no" state=present
+  notify: restart-ssh
+
+# Deployment user
+- name: Create deployment user
+  user: name=deployment password={{ dawn_deployment_password }}
+
+- name: Add deployment user to sudoers
+  lineinfile: dest=/etc/sudoers regexp="deployment ALL" line="deployment ALL=(ALL) ALL" state=present
+
+# Apt
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt: update_cache=yes
+
+- name: Install unattended-upgrades
+  apt: name=unattended-upgrades state=present

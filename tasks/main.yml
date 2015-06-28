@@ -1,0 +1,9 @@
+---
+# tasks file for dawn
+
+- include: main-linux.yml
+
+- include: main-debian-devtools.yml
+
+- include: main-debian-8.yml
+  when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '8'

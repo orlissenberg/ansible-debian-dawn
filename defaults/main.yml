@@ -1,0 +1,6 @@
+---
+# defaults file for dawn
+
+dawn_root_password: null
+
+dawn_deployment_password: null

@@ -1,0 +1,8 @@
+---
+
+- name: Install vim
+  apt: name=vim state=present
+
+- name: Install git
+  apt: name=git state=present
+
