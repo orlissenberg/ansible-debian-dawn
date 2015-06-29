@@ -10,13 +10,18 @@ cat << EOF > $TMP_DIR/hosts
 localhost ansible_connection=local
 EOF
 
+# For science, like Windows putty ppk's.
+sudo apt-get install putty -y 
+
 # Create test ssh keys
 if [ ! -f $TMP_DIR/root_ssh.pub ]; then
 ssh-keygen -t rsa -b 4096 -C "root@example.com" -q -f $TMP_DIR/root_ssh -N ""
+puttygen $TMP_DIR/root_ssh -O private -o $TMP_DIR/root_ssh.ppk
 fi
 
 if [ ! -f $TMP_DIR/deployment_ssh.pub ]; then
 ssh-keygen -t rsa -b 4096 -C "deployment@example.com" -q -f $TMP_DIR/deployment_ssh -N ""
+puttygen $TMP_DIR/deployment_ssh -O private -o $TMP_DIR/deployment_ssh.ppk
 fi
 
 echo 'Enter a password for the deployment user:';
@@ -28,7 +33,7 @@ cat << EOF > $TMP_DIR/group_vars/webservers
 
 dawn_ssh_port: 22
 
-dawn_deployment_password: DEPLOYMENT_PWD
+dawn_deployment_password: $DEPLOYMENT_PWD
 dawn_deployment_ssh: $TMP_DIR/deployment_ssh.pub
 dawn_deployment_name: deployer
 

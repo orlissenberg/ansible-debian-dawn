@@ -7,3 +7,10 @@
 
 - include: main-debian-8.yml
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '8'
+
+- name: Install fail2ban
+  apt: name=fail2ban state=present
+
+- name: Install mosh
+  action: apt pkg=mosh state=installed
+  when: dawn_install_mosh == True

@@ -10,3 +10,5 @@ dawn_root_ssh: null
 dawn_deployment_password: null
 dawn_deployment_ssh: null
 dawn_deployment_name: deployment
+
+dawn_install_mosh: False
