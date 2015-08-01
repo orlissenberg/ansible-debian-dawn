@@ -1,5 +1,11 @@
 ---
 
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt: update_cache=yes
+
+- name: Update all packages to the latest version
+  apt: upgrade=dist
+
 - name: Install sudo
   apt: name=sudo state=present
 
@@ -7,12 +13,12 @@
   apt: name=ssh state=present
 
 # - fail: msg="Root password must be defined."
-#   when: dawn_root_password is undefined 
+#   when: dawn_root_password is undefined
 #         or dawn_root_password|trim == ""
 #         or dawn_root_password == none
 
 # - fail: msg="Deployment password must be defined."
-#   when: dawn_deployment_password is undefined 
+#   when: dawn_deployment_password is undefined
 #         or dawn_deployment_password|trim == ""
 #         or dawn_deployment_password == none
 
@@ -20,7 +26,7 @@
 # {{ dawn_root_password |password_hash('sha512') }}
 - name: Change root password
   user: name=root password={{ dawn_root_password }}
-  when: not (dawn_root_password is undefined 
+  when: not (dawn_root_password is undefined
         or dawn_root_password|trim == ""
         or dawn_root_password == none)
 
@@ -51,7 +57,7 @@
 # Deployment user
 - name: Create deployment user
   user: name={{ dawn_deployment_name }} password={{ dawn_deployment_password }}
-  when: not (dawn_deployment_password is undefined 
+  when: not (dawn_deployment_password is undefined
         or dawn_deployment_password|trim == ""
         or dawn_deployment_password == none)
 
@@ -61,9 +67,6 @@
   lineinfile: dest=/etc/sudoers regexp="{{ dawn_deployment_name }} ALL" line="{{ dawn_deployment_name }} ALL=(ALL) NOPASSWD:ALL" state=present
 
 # Apt
-- name: Run the equivalent of "apt-get update" as a separate step
-  apt: update_cache=yes
-
 - name: Install unattended-upgrades
   apt: name=unattended-upgrades state=present
 
