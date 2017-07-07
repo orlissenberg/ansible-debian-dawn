@@ -5,12 +5,15 @@
 
 - include: main-debian-devtools.yml
 
-- include: main-debian-8.yml
-  when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '8'
-
+# Fail2ban scans log files (e.g. /var/log/apache/error_log) and bans IPs that show
+# the malicious signs -- too many password failures, seeking for exploits, etc.
+# https://www.fail2ban.org/wiki/index.php/Main_Page
 - name: Install fail2ban
   apt: name=fail2ban state=present
 
+# Remote terminal application that allows roaming, supports intermittent connectivity,
+# and provides intelligent local echo and line editing of user keystrokes.
+# https://mosh.org/
 - name: Install mosh
   action: apt pkg=mosh state=installed
-  when: dawn_install_mosh == True
+  when: dawn_install_mosh == true

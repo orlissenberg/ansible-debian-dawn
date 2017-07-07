@@ -30,7 +30,8 @@
         or dawn_root_password|trim == ""
         or dawn_root_password == none)
 
-- authorized_key: user=root key="{{ lookup('file', dawn_root_ssh) }}"
+- name: Add authorized ssh key for the root user
+  authorized_key: user=root key="{{ lookup('file', dawn_root_ssh) }}"
 
 - name: Disallow root SSH access
   lineinfile: dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin no" state=present
@@ -61,12 +62,13 @@
         or dawn_deployment_password|trim == ""
         or dawn_deployment_password == none)
 
-- authorized_key: user={{ dawn_deployment_name }} key="{{ lookup('file', dawn_deployment_ssh) }}"
+- name: Add authorized ssh key for the deployment user
+  authorized_key: user={{ dawn_deployment_name }} key="{{ lookup('file', dawn_deployment_ssh) }}"
 
 - name: Add deployment user to sudoers
   lineinfile: dest=/etc/sudoers regexp="{{ dawn_deployment_name }} ALL" line="{{ dawn_deployment_name }} ALL=(ALL) NOPASSWD:ALL" state=present
 
-# Apt
+# Upgrades
 - name: Install unattended-upgrades
   apt: name=unattended-upgrades state=present
 
