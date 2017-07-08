@@ -2,6 +2,7 @@
 # tasks file for dawn
 
 - include: main-linux.yml
+  when: dawn_setup_system
 
 - include: main-debian-devtools.yml
 
@@ -10,6 +11,7 @@
 # https://www.fail2ban.org/wiki/index.php/Main_Page
 - name: Install fail2ban
   apt: name=fail2ban state=present
+  when: dawn_install_fail2ban
 
 # Remote terminal application that allows roaming, supports intermittent connectivity,
 # and provides intelligent local echo and line editing of user keystrokes.

@@ -1,6 +1,9 @@
 ---
 # defaults file for dawn
 
+# System setup
+dawn_setup_system: true
+
 # Use a port number <65536 (important!) or expect a "Badly formatted port number."
 dawn_ssh_port: 22
 
@@ -11,4 +14,24 @@ dawn_deployment_password: null
 dawn_deployment_ssh: null
 dawn_deployment_name: deployment
 
+# Development tools
+
+dawn_install_vim: true
+dawn_install_git: true
+dawn_install_nano: false
+
+# Various system tools
+
+dawn_install_fail2ban: true
 dawn_install_mosh: false
+
+# https://github.com/serghey-rodin/vesta
+# Vesta is an open source hosting control panel.
+# http://vestacp.com/pub/vst-install-debian.sh
+
+# see: files/vst-install-debian.sh
+# dawn_install_vesta: false
+
+# No Apache, No MySQL, No Exim, No Nginx, No Iptables, Interactive, Force
+# ﻿sudo ./vst-install-debian.sh --interactive yes -a no -m no -x no -n no -i no --force
+# ﻿https://127.0.0.1:8083/login/2

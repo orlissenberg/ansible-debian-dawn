@@ -2,9 +2,13 @@
 
 - name: Install vim
   apt: name=vim state=present
+  when: dawn_install_vim
+
 
 - name: Install git
   apt: name=git state=present
+  when: dawn_install_git
 
 - name: Install nano
   apt: name=nano state=present
+  when: dawn_install_nano
